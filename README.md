@@ -30,37 +30,38 @@ We implemented a movie recommendation system that suggests movies to the user. T
 
 <a name="scala"></a>
 ## 2. Implementation in Scala
-
-### a. Code Completion
-  - We implemented the funciton parseTitle where is extracts the title of the movie from each line of the dataset movies2.csv. It uses a regular expression to match the columns of the title.
-  ```
-  def parseTitle(filmEntry: String) = {
-      ",\\\".*\\\",|,.*,".r findFirstIn filmEntry match {
-      case Some(s) => s.slice(1, s.length - 1).replaceAll("\"","")
-      case None => throw new Exception(s"Cannot parse Movie Title in {$filmEntry}")
+The complete code can be found in [MovieRecommender](https://github.com/RafikHachana/big-data-f21-assignment/tree/main/MovieRecommender). The `sbt` build file is also there. 
+  - ### Code Completion
+    - We implemented the funciton parseTitle where is extracts the title of the movie from each line of the dataset movies2.csv. It uses a regular expression to match the columns of the title.
+  
+    ```
+    def parseTitle(filmEntry: String) = {
+        ",\\\".*\\\",|,.*,".r findFirstIn filmEntry match {
+        case Some(s) => s.slice(1, s.length - 1).replaceAll("\"","")
+        case None => throw new Exception(s"Cannot parse Movie Title in {$filmEntry}")
+      }
     }
-  }
+    ```
+  
+    - We implemented `rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double])` where we calculate the Root Mean Squared Error for the predictions of the model compared to the test dataset.
+    ```
+    def rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]) = {
+      var ratings_predictions = test.map(x => (x.rating, prediction(x.product)))
 
-  ```
-  - We implemented `rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double])` where we calculate the Root Mean Squared Error for the predictions of the model compared to the test dataset.
-  ```
-  def rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]) = {
-    var ratings_predictions = test.map(x => (x.rating, prediction(x.product)))
-      
-    math.sqrt(ratings_predictions
-      .map(x => (x._1 - x._2) * (x._1 - x._2))
-      .reduce(_ + _) / test.count())
-  }
-  ```
-### b. Extra tasks
-  - Post-processing of Recommendations: We excluded the movies that the user already rated by filtering the predicted movies with the RDD's filter method.
-  - Loading Movie Preferences: We added the option of adding the movie prefreneces to a file `user_rating.tsv` instead of interactively providing them to the program. It was implemented through the class [`AutomaticGrader`](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/MovieRecommender/src/AutomaticGrader.scala) where it reads the data from the file, and then converts it to RDD.
-  - Rank of the Model: As we can see in the graphs, the rank $10$ is the best among all ranks w.r.t. Error After Training while $5$ is the best rank w.r.t. Baseline Error. 
+      math.sqrt(ratings_predictions
+        .map(x => (x._1 - x._2) * (x._1 - x._2))
+        .reduce(_ + _) / test.count())
+    }
+    ```
+  - ### Extra tasks
+    - Post-processing of Recommendations: We excluded the movies that the user already rated by filtering the predicted movies with the RDD's filter method.
+    - Loading Movie Preferences: We added the option of adding the movie prefreneces to a file `user_rating.tsv` instead of interactively providing them to the program. It was implemented through the class [`AutomaticGrader`](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/MovieRecommender/src/AutomaticGrader.scala) where it reads the data from the file, and then converts it to RDD.
+    - Rank of the Model: As we can see in the graphs, the rank $10$ is the best among all ranks w.r.t. Error After Training while $5$ is the best rank w.r.t. Baseline Error. 
   
-  ![baseline](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/baseline.png) 
-  ![trainerror](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/error.png)
+    ![baseline](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/baseline.png) 
+    ![trainerror](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/error.png)
   
-  - Extra Filtering: We filtered the infrequent movies (we excluded the ones that have less than 50 ratings) by using the `filter` method in RDD.
+    - Extra Filtering: We filtered the infrequent movies (we excluded the ones that have less than 50 ratings) by using the `filter` method in RDD.
 
 
 <a name="local"></a>
@@ -96,3 +97,4 @@ Hasan Khadra:
 
 <a name="conc"></a>
 ## 6. Conclusion
+In this task, we successfully implemented the movie recommendation system. We worked with apache spark. We used it as an analysis and machine learning engine to train a model with 27k+ movies and 20m+ reviews. We practiced Scala as the model was written in Scala, and explored its different functionality. We then ran the code on a local cluster to improve our performance, and later we distributed the load on several other physical machines to increase the capacity of our nodes.
