@@ -31,11 +31,30 @@ We implemented a movie recommendation system that suggests movies to the user. T
 
 #### a. Code Completion
   - We implemented the funciton parseTitle where is extracts the title of the movie from each line of the dataset movies2.csv. It uses a regular expression to match the columns of the title.
-  - We implemented rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]) TODO
+  ```
+  def parseTitle(filmEntry: String) = {
+      ",\\\".*\\\",|,.*,".r findFirstIn filmEntry match {
+      case Some(s) => s.slice(1, s.length - 1).replaceAll("\"","")
+      case None => throw new Exception(s"Cannot parse Movie Title in {$filmEntry}")
+    }
+  }
+
+  ```
+  - We implemented `rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double])` where we calculate the Root Mean Squared Error for the predictions of the model compared to the test dataset.
+  ```
+  def rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]) = {
+    var ratings_predictions = test.map(x => (x.rating, prediction(x.product)))
+      
+    math.sqrt(ratings_predictions
+      .map(x => (x._1 - x._2) * (x._1 - x._2))
+      .reduce(_ + _) / test.count())
+  }
+  ```
 #### b. Extra tasks
   - Post-processing of Recommendations: We excluded the movies that the user already rated by filtering the predicted movies with the RDD's filter method.
   - Loading Movie Preferences: We added the option of adding the movie prefreneces to a file `user_rating.tsv` instead of interactively providing them to the program. It was implemented through the class `AutomaticGrader` where it reads the data from the file, and then converts it to RDD.
-  - 
+  - Rank of the Model: As we can see in the graphs, the rank $10$ is the best among all ranks w.r.t. Error After Training while $5$ is the best rank w.r.t. Baseline Error. ![baseline](TODO) ![trainerror](TODO)
+  - Extra Filtering: We filtered the infrequent movies (we excluded the ones that have less than 50 ratings) by using the `filter` method in RDD.
 
 
 <a name="local"></a>
