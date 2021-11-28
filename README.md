@@ -18,10 +18,10 @@ Team members:
 ## Table of contents
 1. [ Introduction ](#intro)
 2. [ Implementation in Scala ](#scala)
-  a. [ Code Completion ](#complete) 
 3. [ Running on a local Hadoop cluster ](#local)
 4. [ Running on a private network ](#private)
-5. [ Conclusion ](#conc)
+5. [ Team members contributions ](#contri)
+6. [ Conclusion ](#conc)
 
 ___
 <a name="intro"></a>
@@ -72,5 +72,27 @@ We used HDSF file system, where we stored the datasets and the extra required fi
 
 Describe the Vagrant config
 
+
+<a name="contri"></a>
+### 5. Team members contribution
+
+Rafik Hachana: 
+- Completed parseTitle and rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]).
+- Post-processing of Recommendations Task.
+- Load Your Movie Preferences Task.
+- Setup the disterbuted physical cluster among different machines
+
+Kamil Sabbgh
+- Completed parseTitle and rmse(test: RDD[Rating], prediction: scala.collection.Map[Int, Double]).
+- Change the Rank of the Model Task.
+- Extra Filtering Task.
+- Setup the disterbuted physical cluster among different machines
+
+Hasan Khadra: 
+- Setup the hadoop cluster locally.
+- Load Your Movie Preferences Task.
+- Change the Rank of the Model Task.
+- Post-processing of Recommendations Task.
+
 <a name="conc"></a>
-### 5. Conclusion
+### 6. Conclusion
