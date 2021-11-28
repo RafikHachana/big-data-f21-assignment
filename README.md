@@ -60,9 +60,7 @@ The complete code can be found in [MovieRecommender](https://github.com/RafikHac
   
     ![baseline](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/baseline.png) 
     ![trainerror](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/error.png)
-    This is an example of running the full code while reading the movie preferences from `user-ratings.tsv` file:
-   
-   ![example](https://imgur.com/IQKrPUC)
+    This is an example of running the full code while reading the movie preferences from `user-ratings.tsv` file: ![example](https://i.ibb.co/qy19fR0/bigass10.png)
   
     - Extra Filtering: We filtered the infrequent movies (we excluded the ones that have less than 50 ratings) by using the `filter` method in RDD.
 
@@ -73,9 +71,22 @@ We used HDSF file system, where we stored the datasets and the extra required fi
 
 <a name="private"></a>
 ## 4. Running on a private network
+Here we run the recommendation system on 3 separate physical machines, the setup is similar to the setup described in the previous section and in the the [Distributed Hadoop Cluster Lab](https://hackmd.io/@BigDataInnopolis/BJYVi9q7D). Here is a summary of the steps:
 
-Describe the Vagrant config
+1. Gather the Hadoop and Spark binaries on each machine (3 machines).
 
+2. Use the config provided in local_config/etc in the etc folder of Hadoop. We are naming the machines server-1, server-2, and server-3.
+3. Make sure to have Java installed on all machines, and all machines have the same version. Specifiy the path to the JVM binary in the hadoop/etc/hadoop/hadoop-env.sh file under the JAVA_HOME environment variable.
+4. (Optional) For convenience, we can add the bin directories of Hadoop and Spark to the $PATH variable in ~/.bashrc and then reload the bash environment.
+5. Make sure that all machines are connected to the same local network, no device should be behind a NAT gateway. This was done by connecting to a LAN network. (Can also be done by connecting to a VPN, discussed in the next subsection). Make sure that SSH ports are open on all machines.
+6.  Generate ssh keys on server-1, using ssh-keygen -b 4096  , then distribute it to all the servers.
+7. Start HDFS and YARN, make sure to format HDFS and create a home directory before proceeding.
+8. Upload the dataset and the extra 2 for_grading.tsv`and the `user-ratings.tsv to the same folder.
+9. Now we can run spark-submit to start the job, specify the .jar path, dataset and user argument in the command.
+
+### What could be done differently:
+
+For the private network, we could use a VPN service such as ZeroTier, to make a virtual private network (download and usage guide provided [here](https://www.zerotier.com/download/)).
 
 <a name="contri"></a>
 ## 5. Team members contribution
