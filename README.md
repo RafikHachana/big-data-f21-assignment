@@ -56,10 +56,13 @@ The complete code can be found in [MovieRecommender](https://github.com/RafikHac
   - ### Extra tasks
     - Post-processing of Recommendations: We excluded the movies that the user already rated by filtering the predicted movies with the RDD's filter method.
     - Loading Movie Preferences: We added the option of adding the movie prefreneces to a file `user_rating.tsv` instead of interactively providing them to the program. It was implemented through the class [`AutomaticGrader`](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/MovieRecommender/src/AutomaticGrader.scala) where it reads the data from the file, and then converts it to RDD.
-    - Rank of the Model: As we can see in the graphs, the rank $10$ is the best among all ranks w.r.t. Error After Training while $5$ is the best rank w.r.t. Baseline Error. 
+    - Rank of the Model: As we can see in the graphs, the rank 10 is the best among all ranks w.r.t. Error After Training while 5 is the best rank w.r.t. Baseline Error. 
   
     ![baseline](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/baseline.png) 
     ![trainerror](https://github.com/RafikHachana/big-data-f21-assignment/blob/main/plots/error.png)
+    This is an example of running the full code while reading the movie preferences from `user-ratings.tsv` file:
+   
+   ![example](https://imgur.com/IQKrPUC)
   
     - Extra Filtering: We filtered the infrequent movies (we excluded the ones that have less than 50 ratings) by using the `filter` method in RDD.
 
